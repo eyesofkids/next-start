@@ -54,3 +54,4 @@ package-lock.json
 yarn.lock
 /.temp
 /.html
+.vercel
