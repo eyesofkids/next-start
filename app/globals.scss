@@ -1,13 +1,12 @@
-:root {
+@import '~bootstrap/scss/bootstrap';
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 html,
@@ -35,8 +34,14 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+p {
+  color: black;
+  font-size: 20px;
+  background-color: #ccc;
 }
+
+.title {
+  color: black;
+  font-size: 20px;
+  background-color: #aaa;
+} */

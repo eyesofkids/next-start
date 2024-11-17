@@ -1,0 +1,38 @@
+/* 要覆蓋原本全域的title標記使用 */
+/* .orderTitle {
+    color: blue;
+    font-size: 50px;
+    font-weight: bold;
+} */
+
+/* 要覆蓋原本全域的p標記使用 */
+/* .orderParagraph {
+  color: red;
+  font-size: 40px;
+} */
+
+/* .orderTitle {
+    @apply text-blue-600 mb-6 text-center text-2xl md:mb-10 bg-slate-600;
+  }
+  
+  .orderParagraph {
+    @apply text-gray-800 mb-6 block text-center text-xs leading-9 md:mb-10;
+  } */
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+// .btnPrimary {
+//   color: $gray-900;
+// }
+
+// .btnSecondary {
+//   color: $primary;
+// }
+
+.btnPrimary {
+  --bs-btn-color: white;
+  --bs-btn-bg: gray;
+  --bs-btn-hover-color: gold;
+  --bs-btn-hover-bg: black;
+}
