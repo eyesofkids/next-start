@@ -4,13 +4,23 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prisma-build": "prisma generate && prisma db push --force-reset && prisma db seed",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js",
+    "build": "prisma generate && prisma db push --force-reset && prisma db seed"
+  },
+  "type": "module",
   "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
     "clsx": "^2.1.1",
+    "csvtojson": "^2.0.10",
+    "dotenv": "^16.4.5",
     "next": "14.2.18",
     "node-sass": "^9.0.0",
     "react": "^18",
@@ -26,6 +36,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.2",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "prisma": "^5.22.0"
   }
 }

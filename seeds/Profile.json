@@ -1,0 +1,10 @@
+[
+    {
+        "bio": "I am a software engineer",
+        "userId": 1
+    },
+    {
+        "bio": "I am a super user",
+        "userId": 2
+    }
+]

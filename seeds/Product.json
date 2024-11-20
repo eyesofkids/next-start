@@ -1,0 +1,32 @@
+[
+  {
+    "sn": "3d0f56d4-e212-48dc-bce7-d12af16cfcf4",
+    "name": "Handmade Frozen Salad - Nike 籃球鞋",
+    "photos": "t2.jpg,t1.jpg,t3.jpg",
+    "stock": 100,
+    "price": 2100,
+    "info": "The sleek and unhappy Keyboard comes with 紫色 LED lighting for smart functionality",
+    "brandId": 1,
+    "categoryId": 10
+  },
+  {
+    "sn": "bd56f493-c71b-4e95-85b0-6281293a2212",
+    "name": "Fantastic Wooden Tuna - adidas 外套",
+    "photos": "t4.jpg,t2.jpg,t5.jpg",
+    "stock": 90,
+    "price": 11800,
+    "info": "Ergonomic Shirt made with Steel for all-day purple support",
+    "brandId": 2,
+    "categoryId": 8
+  },
+  {
+    "sn": "de5d1b5c-d179-4927-b236-07cb3a6c2071",
+    "name": "Elegant Bronze Soap - adidas 籃球鞋",
+    "photos": "t2.jpg,t3.jpg,t5.jpg",
+    "stock": 90,
+    "price": 10500,
+    "info": "嚴 - 石's most advanced Mouse technology increases massive capabilities",
+    "brandId": 2,
+    "categoryId": 10
+  }
+]

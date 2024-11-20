@@ -1,7 +1,7 @@
 {
   "workbench.colorCustomizations": {
-    "activityBar.background": "#000018",
-    "titleBar.activeBackground": "#000018",
+    "activityBar.background": "#03551c",
+    "titleBar.activeBackground": "#03551c",
     "titleBar.activeForeground": "#FBFAFA"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -21,5 +21,8 @@
   },
   "emmet.syntaxProfiles": {
     "javascript": "jsx"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
   }
 }

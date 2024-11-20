@@ -1,0 +1,92 @@
+generator client {
+  provider        = "prisma-client-js"
+}
+
+// local dev with mysql
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// vercel deploy with postgresql
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+// }
+
+model Blog {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(255)
+  content   String?  @db.Text
+  published Boolean  @default(false)
+  // 關聯: User:Blog = 1:n 
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  img      String?
+  info     String    @db.Text
+  // 關聯: Brand:Product = 1:n 
+  products Product[]
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  parentId Int?
+  // 關聯: Category:Product = 1:n 
+  products Product[]
+}
+
+model Product {
+  id         Int        @id @default(autoincrement())
+  name       String
+  sn         String     @unique
+  photos     String?    @db.Text
+  stock      Int        @default(0)
+  price      Int        @default(0)
+  info       String     @db.Text
+  // 關聯: Brand:Product = 1:n 
+  brand      Brand      @relation(fields: [brandId], references: [id])
+  brandId    Int
+  category   Category   @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  favorites  Favorite[]
+}
+
+model Favorite {
+  id        Int     @id @default(autoincrement())
+  // 關聯: User:Favorite = 1:n 
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  // 關聯: Product:Favorite = 1:n 
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model Profile {
+  id     Int     @id @default(autoincrement())
+  bio    String?
+  // 1:1 關聯
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int     @unique
+}
+
+model User {
+  id             Int        @id @default(autoincrement())
+  email          String     @unique
+  username       String     @unique
+  password       String
+  name           String?
+  profile        Profile?
+  emailValidated Boolean    @default(false)
+  active         Boolean    @default(false)
+  blogs          Blog[]
+  favorites      Favorite[]
+}
