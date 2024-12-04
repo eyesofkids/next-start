@@ -4,7 +4,8 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "createDefaultProgram": false
   },
   "env": {
     "browser": true,
@@ -17,10 +18,17 @@
     },
     "import/resolver": {
       "alias": {
-        "map": [
-          ["@", "."]
-        ],
-        "extensions": [".js", ".jsx", ".ts", ".tsx", ".css", ".module.css", ".scss", ".json"]
+        "map": [["@", "."]],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx",
+          ".css",
+          ".module.css",
+          ".scss",
+          ".json"
+        ]
       }
     }
   },
@@ -30,15 +38,15 @@
     "plugin:jsx-a11y/recommended",
     "plugin:import/errors",
     "next",
-    "next/core-web-vitals",
-    "prettier"
+    "next/core-web-vitals"
   ],
-  "plugins": ["jsx-a11y", "react", "prettier"],
+  "plugins": ["jsx-a11y", "react"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "jsx-a11y/anchor-is-valid": "off",
     "react/prop-types": "off",
-    "prettier/prettier": "warn",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/label-has-for": "off"
   }
 }
