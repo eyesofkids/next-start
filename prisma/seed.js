@@ -4,28 +4,33 @@ const prisma = new PrismaClient()
 import fs from 'fs'
 import path from 'path'
 import { readFile } from 'fs/promises'
+// 需要額外安裝 csvtojson package
 import csv from 'csvtojson'
+// 需要額外安裝 install bcrypt package
+import bcrypt from 'bcrypt'
+import { isDev } from '../lib/utils.js'
 
-import { generateHash } from '../lib/utils.js'
+// 定義表關聯在這裡，目的是按正確順序的匯入種子資料，否則會出現外鍵約束錯誤或無法匯入的問題
+// foreignKey is in the second table
+const oneToOne = ['User:Profile']
+// foreignKey is in the second table
+const oneToMany = ['Category:Product', 'Brand:Product']
+// foreignKey is in the third table
+const manyToMany = ['User:Product:Favorite']
+
+// seed檔案種類(副檔名)seed files extension (csv| json)
+const fileExtension = 'json'
+// seed檔案存放目錄(相對於專案根目錄) seed files folder path (relative to project root)
+const seedsFolder = 'seeds'
+// 需要先轉換為bcrypt編碼的欄位名稱 create bcrypt password hash
+const bcryptFields = ['password']
+// 需要先轉換為日期的欄位名稱 date format fields
+const dateFields = ['birth']
 
 // convert CamelCase to camelCase for Prisma modelName
 function convertToCamelCase(str) {
   return str.charAt(0).toLowerCase() + str.slice(1)
 }
-
-// 定義表關聯在這裡，目的是按正確順序的匯入種子資料，否則會出現外鍵約束錯誤或無法匯入的問題
-// foreignKey is in the second table
-const oneToOne = ['User-Profile']
-// foreignKey is in the second table
-const oneToMany = ['User-Blog', 'Category-Product', 'Brand-Product']
-// foreignKey is in the third table
-const manyToMany = ['User-Product-Favorite']
-// seed files extension (csv| json)
-const fileExtension = 'json'
-// seed files folder path (relative to project root)
-const seedsFolder = 'seeds'
-// create bcrypt password hash
-const bcryptFields = ['password']
 
 async function main() {
   // seed 檔案存放路徑(相對於專案根目錄)
@@ -38,7 +43,7 @@ async function main() {
 
   // 建立關聯檔案名稱陣列
   for (const relation of relations) {
-    const tmp = relation.split('-')
+    const tmp = relation.split(':')
     for (let i = 0; i < tmp.length; i++) {
       relationFileList.push(`${tmp[i]}.${fileExtension}`)
     }
@@ -49,7 +54,7 @@ async function main() {
   // 依照關聯表順序排序種子檔案
   relationFileList.sort(function (a, b) {
     for (let i = 0; i < relations.length; i++) {
-      const tmp = relations[i].split('-')
+      const tmp = relations[i].split(':')
       // oneToOne, oneToMany
       if (tmp.length === 2 && a.includes(tmp[0]) && b.includes(tmp[1])) {
         return -1
@@ -96,7 +101,7 @@ async function main() {
 
     if (fileExtension === 'json') {
       const jsonData = await readFile(
-        path.join(process.cwd(), `./${seedsFolder}/${filename}`),
+        path.join(process.cwd(), `./${seedsFolder}/${filename}`)
       )
       // allData is an array of objects
       const allData = JSON.parse(jsonData)
@@ -105,8 +110,14 @@ async function main() {
         const newItem = JSON.parse(JSON.stringify(allData[i]))
 
         for (const [key, value] of Object.entries(newItem)) {
+          // bcrypt password
           if (bcryptFields.includes(key)) {
-            newItem[key] = await generateHash(value)
+            newItem[key] = await bcrypt.hash(value, 10)
+          }
+
+          // date format
+          if (dateFields.includes(key)) {
+            newItem[key] = new Date(value)
           }
         }
 
@@ -116,7 +127,7 @@ async function main() {
 
     if (fileExtension === 'csv') {
       const allData = await csv().fromFile(
-        path.join(process.cwd(), `./${seedsFolder}/${filename}`),
+        path.join(process.cwd(), `./${seedsFolder}/${filename}`)
       )
 
       // transform to correct object data type
@@ -140,7 +151,12 @@ async function main() {
 
           // bcrypt password
           if (bcryptFields.includes(key)) {
-            newItem[key] = await generateHash(value)
+            newItem[key] = await bcrypt.hash(value, 10)
+          }
+
+          // date format
+          if (dateFields.includes(key)) {
+            newItem[key] = new Date(value)
           }
 
           // string to number
@@ -175,7 +191,9 @@ async function main() {
       skipDuplicates: true,
     })
 
-    console.log(`Created ${result.count} seeds for "${model}" Model.`)
+    // 如果是開發環境，顯示訊息
+    if (isDev)
+      console.log(`Created ${result.count} seeds for "${model}" Model.`)
   }
 }
 
@@ -184,7 +202,8 @@ main()
     await prisma.$disconnect()
   })
   .catch(async (e) => {
-    console.error(e)
+    // 如果是開發環境，顯示錯誤訊息
+    if (isDev) console.log(e)
     await prisma.$disconnect()
     // eslint-disable-next-line no-process-exit
     process.exit(1)
