@@ -4,6 +4,9 @@ const nextConfig = {
   eslint: {
     // ignoreDuringBuilds: true,
   },
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api'],
+  },
   images: {
     remotePatterns: [
       {
